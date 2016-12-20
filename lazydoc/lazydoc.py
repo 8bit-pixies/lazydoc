@@ -20,28 +20,36 @@ import subprocess
 import argparse
 
 def cleanup():
-    """removes the doc folder to clean up the mess"""
+    """removes the doc folder to clean up the sphinx docs"""
     from shutil import rmtree
     try:
         rmtree("doc")
     except:
         pass
 
-if (sys.version_info > (3, 0)):
-    import configparser
-    config = configparser.ConfigParser()
-    config.read('C:/users/chapm/documents/github/lazydoc/setup.cfg')
-else:
-    import ConfigParser
-    config = ConfigParser.ConfigParser()
-    config.read(open('C:/users/chapm/documents/github/lazydoc/setup.cfg', 'r'))
+def get_config():
+    """extracts the relevant meta data
+    
+    Future todo:
+    extract metadata when it is missing from `setup.cfg`    
+    """
+    if (sys.version_info > (3, 0)):
+        import configparser
+        config = configparser.ConfigParser()
+        config.read('setup.cfg')
+    else:
+        import ConfigParser
+        config = ConfigParser.ConfigParser()
+        config.read(open('setup.cfg', 'r'))
 
-version = config.get('metadata', 'version')
-project = config.get('metadata', 'name')
-author = config.get('metadata', 'author')
+    version = config.get('metadata', 'version')
+    project = config.get('metadata', 'name')
+    author = config.get('metadata', 'author')
+    return version, project, author
 
 def generate():
     """this is the initial generation using sphinx-quickstart"""
+    version, project, author = get_config()
     quickstart = [
     'sphinx-quickstart', 
     'doc', 
@@ -66,27 +74,17 @@ source_parsers = {
 source_suffix = ['.rst', '.md']
 import sys
 import os
-sys.path.append("C:/users/chapm/documents/github/lazydoc")
+sys.path.insert(0, os.path.abspath('..'))
 """
-
     cleanup()
     subprocess.call(quickstart)
 
     with open('doc/conf.py', 'a') as f:
         f.write(recommonmark_settings)
         
-####try:
-####    copyfile(os.join("doc", "index.rst"), os.join("doc", "contents.rst"))
-####except:
-####    pass
-####    
-####try:
-####    copyfile(os.join("doc", "contents.rst"), os.join("doc", "index.rst"))
-####except:
-####    pass
-
 def document():
     """generates documentation automatically"""
+    version, project, author = get_config()
     # generate doc stuff
     gen_docs = [
     'sphinx-apidoc',     
