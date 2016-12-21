@@ -17,7 +17,6 @@ Other implementations:
 
 import os, sys
 import subprocess
-import argparse
 
 def cleanup():
     """removes the doc folder to clean up the sphinx docs"""
@@ -103,19 +102,3 @@ def document():
     print(make_html)
     subprocess.call(make_html)
     os.chdir("..")
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('type')
-    args = parser.parse_args()
-    
-    if args.type.startswith("doc"):
-        document()
-    elif args.type.startswith("gen"):
-        generate()
-    else:
-        print("Please enter 'generate' or 'document'")
-        raise
-
-if __name__ == "__main__":
-    main()
