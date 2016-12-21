@@ -104,7 +104,7 @@ def document():
     subprocess.call(make_html)
     os.chdir("..")
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('type')
     args = parser.parse_args()
@@ -116,3 +116,6 @@ if __name__ == "__main__":
     else:
         print("Please enter 'generate' or 'document'")
         raise
+
+if __name__ == "__main__":
+    main()
