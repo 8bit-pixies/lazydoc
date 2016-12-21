@@ -2,14 +2,15 @@ import argparse
 
 def main():
     from lazydoc.lazydoc import generate, document
-    parser = argparse.ArgumentParser(description='Generate Documents. `gen` for gnerating outline, `doc` for documents.')
-    parser.add_argument('type')
+    parser = argparse.ArgumentParser(description='Generate documentation - the lazy way')
+    parser.add_argument('-g', '--gen', '--generate', help="generate sphinx doc directories", action='store_true')
+    parser.add_argument('-d', '--doc', '--document', help="based on sphinx config, generate all documentation", action='store_true')
     args = parser.parse_args()
+    print(args)
     
-    if args.type.startswith("doc"):
-        document()
-    elif args.type.startswith("gen"):
+    if args.gen:
         generate()
-    else:
-        print("Please enter 'generate' or 'document'")
-        raise
+    if args.doc:
+        document()
+    
+
